@@ -33,7 +33,7 @@ pipeline {
 			steps {
 				script {
 					echo "🔎 Vérification des changements dans src/ ou pom.xml..."
-                    def hasChanges = sh(script: "git diff --name-only HEAD~1 HEAD | grep -E '(src/|pom.xml)' || true", returnStatus: true) == 0
+                    def hasChanges = sh(script: "git diff --name-only origin/main | grep -E '(src/|pom.xml)' || true", returnStatus: true) == 0
                     if (!hasChanges) {
 						echo "⏹️ Aucun changement détecté dans src/ ou pom.xml. Arrêt du pipeline proprement."
                         currentBuild.result = 'SUCCESS'
