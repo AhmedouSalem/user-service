@@ -7,7 +7,7 @@ pipeline {
 
     environment {
 		DOCKER_IMAGE_PREFIX = "ecom"
-        SERVICE_NAME = "user-service" // À adapter pour chaque service
+        SERVICE_NAME = "user-service"
     }
 
     stages {
@@ -25,21 +25,6 @@ pipeline {
                     echo "📚 Branche Git : ${branch}"
                     echo "🔖 Commit Git : ${commit}"
                     echo "🏷️ Version du build : ${VERSION}"
-                }
-            }
-        }
-
-        stage('Check Changes and Abort if None') {
-			steps {
-				script {
-					echo "🔎 Vérification des changements dans src/ ou pom.xml..."
-                    def hasChanges = sh(script: "git diff --name-only origin/main | grep -E '(src/|pom.xml)' || true", returnStatus: true) == 0
-                    if (!hasChanges) {
-						echo "⏹️ Aucun changement détecté dans src/ ou pom.xml. Arrêt du pipeline proprement."
-                        currentBuild.result = 'SUCCESS'
-                        error('⏹️ Build arrêté car aucun changement détecté.')
-                    }
-                    echo "✅ Changements détectés, on continue."
                 }
             }
         }
@@ -69,30 +54,15 @@ pipeline {
             }
         }
 
-        //stage('Docker Push (optionnel)') {
-		//	when {
-		//		expression {
-		//			return env.DOCKER_PUSH == 'true'
-        //        }
-        //    }
-        //    steps {
-		//		echo "🚀 Pousser l'image Docker dans le registre..."
-        //        sh '''
-        //            docker tag $DOCKER_IMAGE_PREFIX-$SERVICE_NAME:$VERSION your-dockerhub-username/$SERVICE_NAME:$VERSION
-        //            docker push your-dockerhub-username/$SERVICE_NAME:$VERSION
-        //        '''
-        //    }
-        //}
-
         stage('Tests d’intégration (placeholder)') {
 			steps {
-				echo "🔗 Tests d'intégration (non implémentés encore)."
+				echo "🔗 Tests d'intégration ici (non implémentés encore)."
             }
         }
 
         stage('Notification (placeholder)') {
 			steps {
-				echo "📢 Notification Email (à configurer plus tard)."
+				echo "📢 Notification Slack/Email (à configurer plus tard)."
             }
         }
     }
